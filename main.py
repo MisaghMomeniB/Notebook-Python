@@ -194,3 +194,9 @@ class Notebook(QMainWindow):
         else:
             self.apply_css("styles/light.css")
             self.current_theme = "light"
+            
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    notebook = Notebook()
+    notebook.show()
+    sys.exit(app.exec_())
