@@ -95,3 +95,16 @@ class Notebook(QMainWindow):
 
         # Add actions to the Font menu
         font_menu.addAction(change_font_action)
+        
+    def apply_css(self, css_file):
+        """
+        Applies a CSS file to the application.
+
+        Args:
+            css_file (str): Path to the CSS file.
+        """
+        try:
+            with open(css_file, "r") as file:
+                self.setStyleSheet(file.read())
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Could not load stylesheet:\n{e}")
