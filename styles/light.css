@@ -1,0 +1,21 @@
+QMainWindow {
+    background-color: #f4f4f4;
+}
+QTextEdit {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    font-family: 'Arial';
+}
+QMenuBar {
+    background-color: #333333;
+    color: #ffffff;
+}
+QMenuBar::item {
+    background-color: transparent;
+    padding: 5px 10px;
+}
+QMenuBar::item:selected {
+    background-color: #555555;
+}
