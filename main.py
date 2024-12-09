@@ -108,3 +108,59 @@ class Notebook(QMainWindow):
                 self.setStyleSheet(file.read())
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Could not load stylesheet:\n{e}")
+            
+    def new_file(self):
+        """
+        Clears the text area for a new file.
+        """
+        self.text_area.clear()
+
+    def open_file(self):
+        """
+        Opens a text file and displays its content in the text area.
+        """
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "Open File", "", "Text Files (*.txt);;All Files (*)"
+        )
+        if file_path:
+            try:
+                with open(file_path, "r", encoding="utf-8") as file:
+                    content = file.read()
+                self.text_area.setText(content)
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Could not open file:\n{e}")
+
+    def save_file(self):
+        """
+        Saves the content of the text area to a file.
+        """
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Save File", "", "Text Files (*.txt);;All Files (*)"
+        )
+        if file_path:
+            try:
+                with open(file_path, "w", encoding="utf-8") as file:
+                    file.write(self.text_area.toPlainText())
+                QMessageBox.information(self, "Success", "File saved successfully!")
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Could not save file:\n{e}")
+
+    def export_to_pdf(self):
+        """
+        Exports the content of the text area to a PDF file.
+        """
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Export to PDF", "", "PDF Files (*.pdf);;All Files (*)"
+        )
+        if file_path:
+            try:
+                pdf = FPDF()
+                pdf.add_page()
+                pdf.set_font("Arial", size=12)
+                lines = self.text_area.toPlainText().split('\n')
+                for line in lines:
+                    pdf.cell(0, 10, line, ln=True)
+                pdf.output(file_path)
+                QMessageBox.information(self, "Success", "PDF exported successfully!")
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Could not export to PDF:\n{e}")
