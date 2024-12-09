@@ -164,3 +164,33 @@ class Notebook(QMainWindow):
                 QMessageBox.information(self, "Success", "PDF exported successfully!")
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Could not export to PDF:\n{e}")
+                
+    def find_text(self):
+        """
+        Finds a specific text in the text area.
+        """
+        search_text, ok = QInputDialog.getText(self, "Find Text", "Enter text to search:")
+        if ok and search_text:
+            cursor = self.text_area.textCursor()
+            cursor = self.text_area.document().find(search_text, cursor)
+            if cursor.isNull():
+                QMessageBox.information(self, "Find", "Text not found!")
+            else:
+                self.text_area.setTextCursor(cursor)
+
+    def change_font(self):
+        """
+        Changes the text area's font to Courier.
+        """
+        self.text_area.setFont(QFont("Courier", 14))
+
+    def toggle_theme(self):
+        """
+        Toggles between light and dark themes.
+        """
+        if self.current_theme == "light":
+            self.apply_css("styles/dark.css")
+            self.current_theme = "dark"
+        else:
+            self.apply_css("styles/light.css")
+            self.current_theme = "light"
