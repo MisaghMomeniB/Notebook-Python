@@ -1,45 +1,75 @@
-# 📝 Notebook Application
+# 📒 Notebook App
 
-**Notebook** is a simple and practical application for note-taking, built using **PyQt**. This project allows you to manage your notes efficiently with a clean and straightforward interface.
+A simple and versatile text editor built with Python using the **PyQt5** framework. This application allows users to create, edit, save, and export text files as PDFs, with support for customizable themes and fonts.
 
----
+## 🖥️ Features
 
-## 🚀 Features
+- **Create New File**: Start with a blank document. ✍️
+- **Open File**: Open and edit existing text files. 📂
+- **Save File**: Save your work to your preferred location. 💾
+- **Export to PDF**: Export your document as a PDF file. 📄➡️📑
+- **Find Text**: Search for specific text within your document. 🔍
+- **Toggle Themes**: Switch between light and dark themes for better readability. 🌞🌙
+- **Change Font**: Change the text font to Courier for better legibility. 🔤
 
-- User-friendly graphical interface  
-- Manage and display notes effortlessly  
-- Easily extendable and customizable  
+## ⚙️ Requirements
 
----
+To run this project, you need Python installed on your system along with the following packages:
 
-## 🛠️ Prerequisites
+- `PyQt5` – GUI toolkit for Python
+- `fpdf` – Library to generate PDFs
 
-To run this project, you need the following:
-
-- Python 3.6 or later  
-- PyQt5  
-
-Install the required libraries using the following command:
-
-```bash
-pip install PyQt5
-```
-
----
-
-## 📦 Running the Application
-
-To run the application, execute the following command:
+You can install the required dependencies using `pip`:
 
 ```bash
-python main.py
+pip install PyQt5 fpdf
 ```
+
+## 🛠️ Installation and Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/notebook-app.git
+   cd notebook-app
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install PyQt5 fpdf
+   ```
+
+3. **Run the application**:
+   ```bash
+   python main.py
+   ```
+
+## 📝 Usage
+
+Once you launch the app, you’ll have the following options:
+
+1. **Create a new file**: Select `File > New` to clear the current document and start fresh.
+2. **Open an existing file**: Select `File > Open...` to load a text file into the editor.
+3. **Save your file**: Select `File > Save...` to save your work.
+4. **Export to PDF**: Select `File > Export to PDF...` to save the content of your document as a PDF.
+5. **Search for text**: Select `Edit > Find...` to search for specific text in your document.
+6. **Change font**: Select `Font > Change to Courier` to update the text font.
+7. **Toggle theme**: Select `View > Toggle Theme` to switch between light and dark themes.
+
+## 🎨 Themes
+
+The app supports both **light** and **dark** themes. You can easily switch between them via the "View" menu. Your current theme is saved during the session, making it simple to pick up where you left off.
+
+## 🐛 Troubleshooting
+
+If you encounter any issues, such as the application not starting, ensure that all dependencies are correctly installed. If you face issues with loading or saving files, verify that you have proper permissions for the directories you are working with.
+
+## 📜 License
+
+This project is open-source and available under the [MIT License](LICENSE).
 
 ---
 
-## 🧩 Code Analysis
-
-### **Imports**
+### 1. Importing Modules
 ```python
 import sys
 from PyQt5.QtWidgets import (
@@ -48,31 +78,12 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QFont, QIcon
 from fpdf import FPDF
 ```
+- `sys`: Provides access to some variables used or maintained by the Python interpreter.
+- `PyQt5.QtWidgets`: Imports various widgets from PyQt5 to build the graphical interface (like windows, text areas, menus, etc.).
+- `QFont`, `QIcon`: These classes are used to set fonts and icons for GUI elements.
+- `FPDF`: A library for generating PDF documents in Python.
 
-1. **`import sys`**:  
-   - Provides access to system-specific parameters and functions, such as command-line arguments (`sys.argv`).
-
-2. **`from PyQt5.QtWidgets import ...`**:  
-   - Imports key PyQt5 widgets used for building the GUI, including:
-     - **`QApplication`**: The core application class for PyQt5 programs.  
-     - **`QMainWindow`**: A main application window with standard features like toolbars and menus.  
-     - **`QTextEdit`**: A widget for multiline text editing.  
-     - **`QMenuBar`**: A menu bar widget for adding menus.  
-     - **`QAction`**: Represents actions such as buttons in menus.  
-     - **`QFileDialog`**: For file open/save dialog boxes.  
-     - **`QMessageBox`**: For pop-up message dialogs.  
-     - **`QInputDialog`**: For simple input dialogs.
-
-3. **`from PyQt5.QtGui import QFont, QIcon`**:  
-   - **`QFont`**: Used for setting font properties.  
-   - **`QIcon`**: Represents icons for buttons, menus, or windows.
-
-4. **`from fpdf import FPDF`**:  
-   - Imports the `FPDF` class for generating PDF files programmatically.
-
----
-
-### **Defining the Notebook Class**
+### 2. The Notebook Class
 ```python
 class Notebook(QMainWindow):
     def __init__(self):
@@ -80,104 +91,143 @@ class Notebook(QMainWindow):
         self.current_theme = "light"  # Current theme, default is light
         self.init_ui()
 ```
+- `Notebook`: This class inherits from `QMainWindow`, making it a window-based application.
+- `self.current_theme`: Keeps track of the current theme (either light or dark). Initially, it's set to "light".
+- `init_ui()`: A method that sets up the user interface (UI) of the application.
 
-5. **`class Notebook(QMainWindow):`**:  
-   - Defines the `Notebook` class, which inherits from `QMainWindow` to create a GUI application with standard window features.
-
-6. **`def __init__(self):`**:  
-   - Initializes the class.  
-
-7. **`super().__init__()`**:  
-   - Calls the parent class (`QMainWindow`) constructor to ensure proper initialization.
-
-8. **`self.current_theme = "light"`**:  
-   - A class attribute to store the current theme (`light` or `dark`).
-
-9. **`self.init_ui()`**:  
-   - Calls the `init_ui` method to set up the user interface.
-
----
-
-### **Setting Up the UI**
+### 3. `init_ui` Method
 ```python
 def init_ui(self):
+    """
+    Initializes the main user interface.
+    Sets up the main window, text area, and menu bar.
+    """
     self.setWindowTitle("Notebook")
     self.setGeometry(100, 100, 800, 600)
+```
+- Sets the window title as **"Notebook"**.
+- The window is set to appear at position (100, 100) on the screen with a width of 800px and height of 600px.
+
+### 4. Setting up the Text Area
+```python
     self.text_area = QTextEdit(self)
     self.text_area.setFont(QFont("Arial", 14))
     self.setCentralWidget(self.text_area)
+```
+- `QTextEdit`: Creates a text area where users can input and edit text.
+- The font for the text area is set to **Arial** with a font size of 14.
+- `setCentralWidget(self.text_area)`: Makes the text area the central widget of the main window.
+
+### 5. Applying the Theme (CSS)
+```python
     self.apply_css("styles/light.css")
+```
+- `apply_css`: Applies a CSS file to style the application (set light theme by default).
+  
+### 6. Creating the Menu Bar
+```python
     self.menu_bar = QMenuBar(self)
     self.setMenuBar(self.menu_bar)
     self.create_menus()
 ```
+- `QMenuBar`: Creates a menu bar at the top of the window.
+- `setMenuBar(self.menu_bar)`: Sets this menu bar to the main window.
+- `create_menus()`: A method that will define and add menus and actions to the menu bar.
 
-10. **`self.setWindowTitle("Notebook")`**:  
-    - Sets the window title to "Notebook".
-
-11. **`self.setGeometry(100, 100, 800, 600)`**:  
-    - Positions the window at `(100, 100)` on the screen with a width of `800` and height of `600`.
-
-12. **`self.text_area = QTextEdit(self)`**:  
-    - Creates a text editing widget as the main area for typing notes.
-
-13. **`self.text_area.setFont(QFont("Arial", 14))`**:  
-    - Sets the font of the text area to Arial with a size of 14.
-
-14. **`self.setCentralWidget(self.text_area)`**:  
-    - Makes the text area the central widget of the main window.
-
-15. **`self.apply_css("styles/light.css")`**:  
-    - Applies a light theme by loading a CSS file.
-
-16. **`self.menu_bar = QMenuBar(self)`**:  
-    - Creates a menu bar for adding menus and actions.
-
-17. **`self.setMenuBar(self.menu_bar)`**:  
-    - Sets the created menu bar as the window's menu bar.
-
-18. **`self.create_menus()`**:  
-    - Calls the `create_menus` method to populate the menu bar.
-
----
-
-### **Creating Menus**
+### 7. `create_menus` Method
 ```python
 def create_menus(self):
+    """
+    Creates the menu bar and adds actions to the menus.
+    """
+```
+- `create_menus`: This method defines all the menus (File, Edit, View, Font) and the actions for each.
+
+### 8. File Menu Actions
+```python
     file_menu = self.menu_bar.addMenu("File")
+    
     new_action = QAction(QIcon("icons/new.png"), "New", self)
     new_action.triggered.connect(self.new_file)
-    ...
+
+    open_action = QAction(QIcon("icons/open.png"), "Open...", self)
+    open_action.triggered.connect(self.open_file)
+    
+    save_action = QAction(QIcon("icons/save.png"), "Save...", self)
+    save_action.triggered.connect(self.save_file)
+
+    export_pdf_action = QAction(QIcon("icons/pdf.png"), "Export to PDF...", self)
+    export_pdf_action.triggered.connect(self.export_to_pdf)
+
+    exit_action = QAction("Exit", self)
+    exit_action.triggered.connect(self.close)
 ```
+- `QAction`: Creates an action for each menu item with an associated icon and text.
+- **Triggering actions**: Each action is connected to a method (like `new_file`, `open_file`, etc.) that performs a specific function when the action is triggered.
+- **Adding actions to file menu**: These actions (New, Open, Save, etc.) are added to the "File" menu.
 
-19. **`file_menu = self.menu_bar.addMenu("File")`**:  
-    - Adds a "File" menu to the menu bar.
+### 9. Edit, View, and Font Menus
+```python
+    edit_menu = self.menu_bar.addMenu("Edit")
+    find_action = QAction("Find...", self)
+    find_action.triggered.connect(self.find_text)
+    edit_menu.addAction(find_action)
 
-20. **`new_action = QAction(QIcon("icons/new.png"), "New", self)`**:  
-    - Creates a "New" action with an icon.
+    view_menu = self.menu_bar.addMenu("View")
+    toggle_theme_action = QAction("Toggle Theme", self)
+    toggle_theme_action.triggered.connect(self.toggle_theme)
+    view_menu.addAction(toggle_theme_action)
 
-21. **`new_action.triggered.connect(self.new_file)`**:  
-    - Connects the "New" action to the `new_file` method, executed when the action is triggered.
+    font_menu = self.menu_bar.addMenu("Font")
+    change_font_action = QAction("Change to Courier", self)
+    change_font_action.triggered.connect(self.change_font)
+    font_menu.addAction(change_font_action)
+```
+- **Edit Menu**: Contains a "Find" action to search for specific text in the document.
+- **View Menu**: Allows toggling between light and dark themes.
+- **Font Menu**: Provides an option to change the text font to "Courier".
 
-*(Similar steps are repeated for other menus and actions, such as "Open", "Save", "Export to PDF", etc.)*
+### 10. `apply_css` Method
+```python
+def apply_css(self, css_file):
+    """
+    Applies a CSS file to the application.
+    """
+    try:
+        with open(css_file, "r") as file:
+            self.setStyleSheet(file.read())
+    except Exception as e:
+        QMessageBox.critical(self, "Error", f"Could not load stylesheet:\n{e}")
+```
+- Reads a CSS file and applies it to the application using `setStyleSheet`.
+- If the CSS file cannot be loaded, it displays an error message using `QMessageBox`.
 
----
+### 11. File Actions Methods (New, Open, Save, Export)
+- `new_file`: Clears the text area.
+- `open_file`: Opens a file and loads its content into the text area.
+- `save_file`: Saves the content of the text area to a file.
+- `export_to_pdf`: Exports the content of the text area to a PDF file using `FPDF`.
 
-### **Methods for Menu Actions**
-Each action method implements specific functionality:
+### 12. Search and Change Font
+- `find_text`: Searches for text in the document. Displays a dialog where the user can input the text to search.
+- `change_font`: Changes the font of the text area to **Courier**.
 
-- **`apply_css`**: Loads and applies a CSS theme.  
-- **`new_file`**: Clears the text area.  
-- **`open_file`**: Opens and loads text files into the text area.  
-- **`save_file`**: Saves the text area's content to a file.  
-- **`export_to_pdf`**: Converts text to a PDF using `FPDF`.  
-- **`find_text`**: Searches for text in the editor.  
-- **`change_font`**: Changes the text area font to Courier.  
-- **`toggle_theme`**: Toggles between light and dark themes.
+### 13. Theme Toggle
+```python
+def toggle_theme(self):
+    """
+    Toggles between light and dark themes.
+    """
+    if self.current_theme == "light":
+        self.apply_css("styles/dark.css")
+        self.current_theme = "dark"
+    else:
+        self.apply_css("styles/light.css")
+        self.current_theme = "light"
+```
+- Toggles the theme between light and dark by applying different CSS files (`light.css` or `dark.css`).
 
----
-
-### **Main Program Execution**
+### 14. Running the Application
 ```python
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -185,20 +235,12 @@ if __name__ == "__main__":
     notebook.show()
     sys.exit(app.exec_())
 ```
-
-22. **`if __name__ == "__main__":`**:  
-    - Ensures this block runs only when the script is executed directly.
-
-23. **`app = QApplication(sys.argv)`**:  
-    - Creates a PyQt application instance to manage GUI events.
-
-24. **`notebook = Notebook()`**:  
-    - Instantiates the `Notebook` application.
-
-25. **`notebook.show()`**:  
-    - Displays the main window.
-
-26. **`sys.exit(app.exec_())`**:  
-    - Starts the event loop and exits cleanly when the application is closed.
+- This block starts the application by creating an instance of `QApplication` and running the `Notebook` application window.
+- The event loop is started with `app.exec_()`, keeping the window open and responsive until closed.
 
 ---
+
+### Summary
+
+- The app provides a basic text editor with file handling, search functionality, font changes, theme toggling, and PDF export.
+- The GUI is structured with a menu bar allowing for intuitive navigation and user interaction.
