@@ -9,21 +9,20 @@ class Notebook(QMainWindow):
         super().__init__()
         self.current_theme = "light"
         self.settings = QSettings("MyCompany", "NotebookApp")
+        self.text_area = QTextEdit(self)
+        self.text_area.setFont(QFont("Arial", 14))
+        self.setCentralWidget(self.text_area)
+        
         self.init_ui()
 
     def init_ui(self):
         self.setWindowTitle("Notebook")
         self.setGeometry(100, 100, 800, 600)
 
-        # Create Text Area
-        self.text_area = QTextEdit(self)
-        self.text_area.setFont(QFont("Arial", 14))
-        self.setCentralWidget(self.text_area)
-
         # Load theme from settings
         self.apply_css(self.settings.value("theme", "styles/light.css"))
 
-        # Create Menus
+        # Create menus
         self.create_menus()
 
     def create_menus(self):
@@ -52,7 +51,6 @@ class Notebook(QMainWindow):
         for menu_name, actions in menu_data.items():
             menu = self.menu_bar.addMenu(menu_name)
             for action_name, icon_path, handler in actions:
-                # If icon_path is None, use an empty QIcon
                 icon = QIcon(icon_path) if icon_path else QIcon()
                 action = QAction(icon, action_name, self)
                 action.triggered.connect(handler)
@@ -64,7 +62,7 @@ class Notebook(QMainWindow):
             with open(css_file, "r") as file:
                 self.setStyleSheet(file.read())
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Could not load stylesheet:\n{e}")
+            self.show_error("Error", f"Could not load stylesheet: {e}")
 
     def new_file(self):
         """Clear text area."""
@@ -82,7 +80,7 @@ class Notebook(QMainWindow):
             with open(file_path, "r", encoding="utf-8") as file:
                 self.text_area.setText(file.read())
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Could not open file:\n{e}")
+            self.show_error("Error", f"Could not open file: {e}")
 
     def save_file(self):
         """Save the text area content to a file."""
@@ -96,7 +94,7 @@ class Notebook(QMainWindow):
             with open(file_path, "w", encoding="utf-8") as file:
                 file.write(self.text_area.toPlainText())
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Could not save file:\n{e}")
+            self.show_error("Error", f"Could not save file: {e}")
 
     def export_to_pdf(self):
         """Export content to a PDF file."""
@@ -114,7 +112,7 @@ class Notebook(QMainWindow):
                 pdf.cell(0, 10, line, ln=True)
             pdf.output(file_path)
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Could not export to PDF:\n{e}")
+            self.show_error("Error", f"Could not export to PDF: {e}")
 
     def find_text(self):
         """Find text in the text area."""
@@ -143,6 +141,10 @@ class Notebook(QMainWindow):
             self.apply_css("styles/light.css")
             self.settings.setValue("theme", "styles/light.css")
             self.current_theme = "light"
+
+    def show_error(self, title, message):
+        """Show an error message in a dialog."""
+        QMessageBox.critical(self, title, message)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
